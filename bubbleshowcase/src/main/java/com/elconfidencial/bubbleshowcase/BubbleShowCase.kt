@@ -10,7 +10,7 @@ import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Handler
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -56,7 +56,7 @@ class BubbleShowCase(builder: BubbleShowCaseBuilder){
     private val mImage: Drawable? = builder.mImage
     private val mTitle: String? = builder.mTitle
     private val mSubtitle: String? = builder.mSubtitle
-    private val mCloseAction: Drawable? = builder.mCloseAction
+    private val mCloseAction: String? = builder.mCloseAction
     private val mBackgroundColor: Int? = builder.mBackgroundColor
     private val mTextColor: Int? = builder.mTextColor
     private val mTitleTextSize: Int? = builder.mTitleTextSize
@@ -173,7 +173,7 @@ class BubbleShowCase(builder: BubbleShowCaseBuilder){
                 .title(mTitle)
                 .subtitle(mSubtitle)
                 .image(mImage)
-                .closeActionImage(mCloseAction)
+                .closeText(mCloseAction)
                 .disableCloseAction(mDisableCloseAction)
                 .listener(object : OnBubbleMessageViewListener {
                     override fun onBubbleClick() {
@@ -225,7 +225,6 @@ class BubbleShowCase(builder: BubbleShowCaseBuilder){
 
         val targetViewParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
         targetViewParams.setMargins(getXposition(targetView), getYposition(targetView), getScreenWidth(mActivity.get()!!) - (getXposition(targetView) + targetView.width), 0)
-        backgroundDimLayout?.addView(AnimationUtils.setBouncingAnimation(targetScreenshotView, 0, DURATION_BEATING_ANIMATION), targetViewParams)
     }
 
     /**

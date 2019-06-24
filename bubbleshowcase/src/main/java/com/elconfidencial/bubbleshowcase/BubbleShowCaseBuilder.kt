@@ -2,7 +2,7 @@ package com.elconfidencial.bubbleshowcase
 
 import android.app.Activity
 import android.graphics.drawable.Drawable
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.view.View
 import android.view.ViewTreeObserver
 import java.lang.ref.WeakReference
@@ -11,13 +11,13 @@ import java.util.ArrayList
 /**
  * Created by jcampos on 04/09/2018.
  */
-class BubbleShowCaseBuilder{
+class BubbleShowCaseBuilder {
 
     internal var mActivity: WeakReference<Activity>? = null
     internal var mImage: Drawable? = null
     internal var mTitle: String? = null
     internal var mSubtitle: String? = null
-    internal var mCloseAction: Drawable? = null
+    internal var mCloseAction: String? = null
     internal var mBackgroundColor: Int? = null
     internal var mTextColor: Int? = null
     internal var mTitleTextSize: Int? = null
@@ -38,7 +38,7 @@ class BubbleShowCaseBuilder{
     /**
      * Builder constructor. It needs an instance of the current activity to convert it to a weak reference in order to avoid memory leaks
      */
-    constructor(activity: Activity){
+    constructor(activity: Activity) {
         mActivity = WeakReference(activity)
     }
 
@@ -72,7 +72,7 @@ class BubbleShowCaseBuilder{
      *  - If this param is not passed, the BubbleShowCase will not have main image
      */
     fun imageResourceId(resId: Int): BubbleShowCaseBuilder {
-        mImage = ContextCompat.getDrawable(mActivity!!.get(), resId)
+        mImage = mActivity!!.get()?.let { ContextCompat.getDrawable(it, resId) }
         return this
     }
 
@@ -80,8 +80,8 @@ class BubbleShowCaseBuilder{
      * Image drawable to be inserted as close icon in the BubbleShowCase.
      *  - If this param is not defined, a default close icon is displayed
      */
-    fun closeActionImage(image: Drawable?): BubbleShowCaseBuilder {
-        mCloseAction = image
+    fun closeActionImage(text: String?): BubbleShowCaseBuilder {
+        mCloseAction = text
         return this
     }
 
@@ -89,11 +89,10 @@ class BubbleShowCaseBuilder{
      * Image resource id to insert the corresponding drawable as close icon in the BubbleShowCase.
      *  - If this param is not defined, a default close icon is displayed
      */
-    fun closeActionImageResourceId(resId: Int): BubbleShowCaseBuilder {
-        mCloseAction = ContextCompat.getDrawable(mActivity!!.get(), resId)
+    fun closeActionText(text: String): BubbleShowCaseBuilder {
+        mCloseAction = text
         return this
     }
-
 
     /**
      * Background color of the BubbleShowCase.
@@ -109,7 +108,7 @@ class BubbleShowCaseBuilder{
      *  - #3F51B5 color will be set if this param is not defined
      */
     fun backgroundColorResourceId(colorResId: Int): BubbleShowCaseBuilder {
-        mBackgroundColor = ContextCompat.getColor(mActivity!!.get(), colorResId)
+        mBackgroundColor = mActivity!!.get()?.let { ContextCompat.getColor(it, colorResId) }
         return this
     }
 
@@ -127,7 +126,7 @@ class BubbleShowCaseBuilder{
      *  - White color will be set if this param is not defined
      */
     fun textColorResourceId(colorResId: Int): BubbleShowCaseBuilder {
-        mTextColor = ContextCompat.getColor(mActivity!!.get(), colorResId)
+        mTextColor = mActivity!!.get()?.let { ContextCompat.getColor(it, colorResId) }
         return this
     }
 
@@ -171,7 +170,7 @@ class BubbleShowCaseBuilder{
      * If this variable is true, when user clicks on the target, the showcase will not be dismissed
      *  Default value -> false
      */
-    fun disableTargetClick(isDisabled: Boolean): BubbleShowCaseBuilder{
+    fun disableTargetClick(isDisabled: Boolean): BubbleShowCaseBuilder {
         mDisableTargetClick = isDisabled
         return this
     }
@@ -180,7 +179,7 @@ class BubbleShowCaseBuilder{
      * If this variable is true, close action button will be gone
      *  Default value -> false
      */
-    fun disableCloseAction(isDisabled: Boolean): BubbleShowCaseBuilder{
+    fun disableCloseAction(isDisabled: Boolean): BubbleShowCaseBuilder {
         mDisableCloseAction = isDisabled
         return this
     }
@@ -235,12 +234,12 @@ class BubbleShowCaseBuilder{
         return this
     }
 
-    internal fun isFirstOfSequence(isFirst: Boolean): BubbleShowCaseBuilder{
+    internal fun isFirstOfSequence(isFirst: Boolean): BubbleShowCaseBuilder {
         mIsFirstOfSequence = isFirst
         return this
     }
 
-    internal fun isLastOfSequence(isLast: Boolean): BubbleShowCaseBuilder{
+    internal fun isLastOfSequence(isLast: Boolean): BubbleShowCaseBuilder {
         mIsLastOfSequence = isLast
         return this
     }
@@ -249,9 +248,9 @@ class BubbleShowCaseBuilder{
      * Build the BubbleShowCase object from the builder one
      */
     private fun build(): BubbleShowCase {
-        if(mIsFirstOfSequence ==null)
+        if (mIsFirstOfSequence == null)
             mIsFirstOfSequence = true
-        if(mIsLastOfSequence ==null)
+        if (mIsLastOfSequence == null)
             mIsLastOfSequence = true
 
         return BubbleShowCase(this)
@@ -260,7 +259,7 @@ class BubbleShowCaseBuilder{
     /**
      * Show the BubbleShowCase using the params added previously
      */
-    fun show(): BubbleShowCase{
+    fun show(): BubbleShowCase {
         val bubbleShowCase = build()
         if (mTargetView != null) {
             val targetView = mTargetView!!.get()

@@ -6,8 +6,8 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
-import android.support.constraint.ConstraintLayout
-import android.support.v4.content.ContextCompat
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
@@ -30,7 +30,7 @@ class BubbleMessageView : ConstraintLayout {
     private var imageViewIcon: ImageView? = null
     private var textViewTitle: TextView? = null
     private var textViewSubtitle: TextView? = null
-    private var imageViewClose: ImageView? = null
+    private var textViewClose: TextView? = null
     private var showCaseMessageViewLayout: ConstraintLayout? = null
 
     private var targetViewScreenLocation: RectF? = null
@@ -66,24 +66,24 @@ class BubbleMessageView : ConstraintLayout {
 
     private fun bindViews() {
         imageViewIcon = findViewById(R.id.imageViewShowCase)
-        imageViewClose = findViewById(R.id.imageViewShowCaseClose)
+        textViewClose = findViewById(R.id.textViewShowCaseClose)
         textViewTitle = findViewById(R.id.textViewShowCaseTitle)
         textViewSubtitle = findViewById(R.id.textViewShowCaseText)
         showCaseMessageViewLayout = findViewById(R.id.showCaseMessageViewLayout)
     }
 
-    private fun setAttributes(builder: Builder){
-        if(builder.mImage!=null){
+    private fun setAttributes(builder: Builder) {
+        if (builder.mImage != null) {
             imageViewIcon?.visibility = View.VISIBLE
             imageViewIcon?.setImageDrawable(builder.mImage!!)
         }
-        if(builder.mCloseAction!=null){
-            imageViewClose?.visibility = View.VISIBLE
-            imageViewClose?.setImageDrawable(builder.mCloseAction!!)
+        if (builder.mCloseText != null) {
+            textViewClose?.visibility = View.VISIBLE
+            textViewClose?.text = builder.mCloseText
         }
 
-        if(builder.mDisableCloseAction!=null && builder.mDisableCloseAction!!){
-            imageViewClose?.visibility = View.INVISIBLE
+        if (builder.mDisableCloseAction != null && builder.mDisableCloseAction!!) {
+            textViewClose?.visibility = View.INVISIBLE
         }
 
         builder.mTitle?.let {
@@ -109,11 +109,10 @@ class BubbleMessageView : ConstraintLayout {
         targetViewScreenLocation = builder.mTargetViewScreenLocation
     }
 
-    private fun setBubbleListener(builder: Builder){
-        imageViewClose?.setOnClickListener {builder.mListener?.onCloseActionImageClick()}
-        itemView?.setOnClickListener {builder.mListener?.onBubbleClick()}
+    private fun setBubbleListener(builder: Builder) {
+        textViewClose?.setOnClickListener { builder.mListener?.onCloseActionImageClick() }
+        itemView?.setOnClickListener { builder.mListener?.onBubbleClick() }
     }
-
 
     //END REGION
 
@@ -162,18 +161,18 @@ class BubbleMessageView : ConstraintLayout {
         when (arrowPosition) {
             BubbleShowCase.ArrowPosition.LEFT -> {
                 xPosition = getMargin()
-                yPosition = if(targetViewLocationOnScreen!=null) getArrowVerticalPositionDependingOnTarget(targetViewLocationOnScreen) else height / 2
+                yPosition = if (targetViewLocationOnScreen != null) getArrowVerticalPositionDependingOnTarget(targetViewLocationOnScreen) else height / 2
             }
             BubbleShowCase.ArrowPosition.RIGHT -> {
                 xPosition = getViewWidth() - getMargin()
-                yPosition = if(targetViewLocationOnScreen!=null) getArrowVerticalPositionDependingOnTarget(targetViewLocationOnScreen) else height / 2
+                yPosition = if (targetViewLocationOnScreen != null) getArrowVerticalPositionDependingOnTarget(targetViewLocationOnScreen) else height / 2
             }
             BubbleShowCase.ArrowPosition.TOP -> {
-                xPosition = if(targetViewLocationOnScreen!=null) getArrowHorizontalPositionDependingOnTarget(targetViewLocationOnScreen) else width / 2
+                xPosition = if (targetViewLocationOnScreen != null) getArrowHorizontalPositionDependingOnTarget(targetViewLocationOnScreen) else width / 2
                 yPosition = getMargin()
             }
             BubbleShowCase.ArrowPosition.BOTTOM -> {
-                xPosition = if(targetViewLocationOnScreen!=null) getArrowHorizontalPositionDependingOnTarget(targetViewLocationOnScreen) else width / 2
+                xPosition = if (targetViewLocationOnScreen != null) getArrowHorizontalPositionDependingOnTarget(targetViewLocationOnScreen) else width / 2
                 yPosition = height - getMargin()
             }
         }
@@ -217,7 +216,6 @@ class BubbleMessageView : ConstraintLayout {
         return targetViewLocationOnScreen!!.centerY() < ScreenUtils.getAxisYpositionOfViewOnScreen(this) + getSecurityArrowMargin() - ScreenUtils.getStatusBarHeight(context)
     }
 
-
     private fun drawRhombus(canvas: Canvas, paint: Paint?, x: Int, y: Int, width: Int) {
         val halfRhombusWidth = width / 2
 
@@ -232,28 +230,27 @@ class BubbleMessageView : ConstraintLayout {
         canvas.drawPath(path, paint!!)
     }
 
-
     //END REGION
 
     /**
      * Builder for BubbleMessageView class
      */
-    class Builder{
+    class Builder {
         lateinit var mContext: WeakReference<Context>
         var mTargetViewScreenLocation: RectF? = null
         var mImage: Drawable? = null
         var mDisableCloseAction: Boolean? = null
         var mTitle: String? = null
         var mSubtitle: String? = null
-        var mCloseAction: Drawable? = null
+        var mCloseText: String? = null
         var mBackgroundColor: Int? = null
         var mTextColor: Int? = null
         var mTitleTextSize: Int? = null
         var mSubtitleTextSize: Int? = null
-        var mArrowPosition  = ArrayList<BubbleShowCase.ArrowPosition>()
+        var mArrowPosition = ArrayList<BubbleShowCase.ArrowPosition>()
         var mListener: OnBubbleMessageViewListener? = null
 
-        fun from(context: Context): Builder{
+        fun from(context: Context): Builder {
             mContext = WeakReference(context)
             return this
         }
@@ -273,8 +270,8 @@ class BubbleMessageView : ConstraintLayout {
             return this
         }
 
-        fun closeActionImage(image: Drawable?): Builder {
-            mCloseAction = image
+        fun closeText(text: String?): Builder {
+            mCloseText = text
             return this
         }
 
@@ -283,7 +280,7 @@ class BubbleMessageView : ConstraintLayout {
             return this
         }
 
-        fun targetViewScreenLocation(targetViewLocationOnScreen: RectF): Builder{
+        fun targetViewScreenLocation(targetViewLocationOnScreen: RectF): Builder {
             mTargetViewScreenLocation = targetViewLocationOnScreen
             return this
         }
@@ -319,7 +316,7 @@ class BubbleMessageView : ConstraintLayout {
             return this
         }
 
-        fun build(): BubbleMessageView{
+        fun build(): BubbleMessageView {
             return BubbleMessageView(mContext.get()!!, this)
         }
     }
