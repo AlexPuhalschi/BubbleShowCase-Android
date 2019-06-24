@@ -7,17 +7,15 @@
     android:layout_height="wrap_content"
     android:elevation="2dp"
     android:maxWidth="420dp"
-    android:paddingLeft="36dp"
+    android:paddingStart="36dp"
     android:paddingTop="20dp"
-    android:paddingRight="20dp"
-    android:paddingBottom="36dp">
+    android:paddingEnd="20dp">
 
     <ImageView
         android:id="@+id/imageViewShowCase"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginStart="0dp"
-        android:layout_marginLeft="0dp"
         android:layout_marginTop="16dp"
         android:src="@drawable/rounded_rectangle"
         android:visibility="gone"
@@ -30,7 +28,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="16dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toStartOf="@+id/textViewShowCaseClose"
@@ -42,9 +39,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:breakStrategy="simple"
+            android:fontFamily="@font/roboto_medium"
             android:text="Title"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             android:visibility="gone" />
 
@@ -54,20 +52,26 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:breakStrategy="simple"
+            android:fontFamily="@font/roboto_regular"
             android:textColor="@color/white"
             android:textSize="14sp"
             android:visibility="gone" />
     </LinearLayout>
 
-
     <TextView
         android:id="@+id/textViewShowCaseClose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="15dp"
+        android:fontFamily="@font/roboto_medium"
+        android:gravity="center"
+        android:paddingStart="16dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="14dp"
         android:textColor="@color/blue"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutTexts"
         tools:text="Next" />
 </androidx.constraintlayout.widget.ConstraintLayout>
