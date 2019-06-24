@@ -52,6 +52,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_regular"
             android:textColor="@color/white"
+            android:lineSpacingExtra="5sp"
             android:textSize="14sp"
             android:visibility="visible"
             tools:text="Lorem Ipsum" />
