@@ -225,6 +225,7 @@ class BubbleShowCase(builder: BubbleShowCaseBuilder){
 
         val targetViewParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
         targetViewParams.setMargins(getXposition(targetView), getYposition(targetView), getScreenWidth(mActivity.get()!!) - (getXposition(targetView) + targetView.width), 0)
+        backgroundDimLayout?.addView(AnimationUtils.setBouncingAnimation(targetScreenshotView, 0, DURATION_BEATING_ANIMATION), targetViewParams)
     }
 
     /**

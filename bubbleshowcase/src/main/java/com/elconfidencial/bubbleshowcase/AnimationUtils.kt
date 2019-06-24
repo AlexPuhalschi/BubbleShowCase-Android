@@ -40,8 +40,6 @@ object AnimationUtils {
                 PropertyValuesHolder.ofFloat("scaleY", 1.05f))
         objAnim.duration = duration.toLong()
         objAnim.startDelay = offset.toLong()
-        objAnim.repeatCount = ObjectAnimator.INFINITE
-        objAnim.repeatMode = ObjectAnimator.REVERSE
         objAnim.start()
         return view
     }
